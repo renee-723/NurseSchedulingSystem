@@ -1,0 +1,6 @@
+@NurseSchedulingSystem_HostAddress = http://localhost:5274
+
+GET {{NurseSchedulingSystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,123 @@
+[
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.NursesController",
+    "Method": "GetAllNurse",
+    "RelativePath": "api/Nurses",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.NursesController",
+    "Method": "CreateNurse",
+    "RelativePath": "api/Nurses",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "nurse",
+        "Type": "NurseSchedulingSystem.Entities.Nurse",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.NursesController",
+    "Method": "DeleteNurse",
+    "RelativePath": "api/Nurses/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
+    "Method": "GetAllSchedules",
+    "RelativePath": "api/ShiftSchedules",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
+    "Method": "CreatSchedule",
+    "RelativePath": "api/ShiftSchedules",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "schedule",
+        "Type": "NurseSchedulingSystem.Entities.ShiftSchedule",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
+    "Method": "DeleteSchedule",
+    "RelativePath": "api/ShiftSchedules/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
+    "Method": "GetStatus",
+    "RelativePath": "api/ShiftSchedules/Status/{date}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "date",
+        "Type": "System.DateTime",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.WeatherForecastController",
+    "Method": "Get",
+    "RelativePath": "WeatherForecast",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[NurseSchedulingSystem.WeatherForecast, NurseSchedulingSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "EndpointName": "GetWeatherForecast"
+  }
+]
