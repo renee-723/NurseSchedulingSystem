@@ -138,3 +138,4 @@ C:\Users\reney\source\repos\NurseSchedulingSystem\NurseSchedulingSystem\obj\Debu
 C:\Users\reney\source\repos\NurseSchedulingSystem\NurseSchedulingSystem\obj\Debug\net8.0\NurseSchedulingSystem.pdb
 C:\Users\reney\source\repos\NurseSchedulingSystem\NurseSchedulingSystem\obj\Debug\net8.0\NurseSchedulingSystem.genruntimeconfig.cache
 C:\Users\reney\source\repos\NurseSchedulingSystem\NurseSchedulingSystem\obj\Debug\net8.0\ref\NurseSchedulingSystem.dll
+C:\Users\reney\source\repos\NurseSchedulingSystem\NurseSchedulingSystem\obj\Debug\net8.0\NurseSchedulingSystem.sourcelink.json

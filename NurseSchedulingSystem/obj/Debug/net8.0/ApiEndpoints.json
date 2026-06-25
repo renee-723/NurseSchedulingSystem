@@ -27,6 +27,27 @@
   },
   {
     "ContainingType": "NurseSchedulingSystem.Controllers.NursesController",
+    "Method": "UpdateNurseStatus",
+    "RelativePath": "api/Nurses/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "isActive",
+        "Type": "System.Boolean",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.NursesController",
     "Method": "DeleteNurse",
     "RelativePath": "api/Nurses/{id}",
     "HttpMethod": "DELETE",

@@ -9,6 +9,8 @@ builder.Services.AddDbContext<NurseSchedulingSystem.Data.AppDbContext>(options =
 
 builder.Services.AddScoped<NurseSchedulingSystem.Services.ShiftService>();  // 註冊你的 Service
 
+builder.Services.AddScoped<NurseSchedulingSystem.Services.ShiftService>();
+
 builder.Services.AddControllers(); 
 
 

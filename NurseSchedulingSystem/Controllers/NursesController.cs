@@ -32,6 +32,22 @@ namespace NurseSchedulingSystem.Controllers
             return Ok(nurse); //回傳剛剛新增的資料，確認成功
         }
 
+        //更新護理師
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateNurseStatus (int id, [FromBody]bool isActive)
+        {
+            var nurse = await _context.Nurses.FindAsync(id);
+            if (nurse == null)
+            {
+                return NotFound($"找不到ID為{id}的護理師");
+            }
+
+            //更新狀態
+            nurse.isActive = isActive;
+            await _context.SaveChangesAsync();
+            return Ok(nurse);
+        }
+
         //刪除已離職護理師
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNurse(int id)

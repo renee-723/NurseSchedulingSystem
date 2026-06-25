@@ -36,14 +36,18 @@ namespace NurseSchedulingSystem.Controllers
             var nurse = await _context.Nurses.FindAsync(schedule.NurseId);
             if (nurse == null)
             {
-                return BadRequest($"找不到 ID 為 {schedule.NurseId} 的護理師！");
+                return BadRequest("找不到護理師");
             }
             if((schedule.ShiftType == "E" || schedule.ShiftType == "N") && nurse.Role != "N3")
             {
-                return BadRequest($"班別{schedule.ShiftType}要求N3以上職級，但該位護理師職級為{nurse.Role}");
+                return BadRequest($"班別{schedule.ShiftType}要求N3以上職級!");
+            }
+            if(await _shiftService.IsConsecutiveDaysExceeded(schedule.NurseId, schedule.Date))
+            {
+                return BadRequest("該護理師已連續上班5天，必須休息");
             }
             // 將資料庫中撈到的護理師資訊關聯給班表
-            schedule.Nurse = nurse;
+            //schedule.Nurse = nurse;
             _context.ShiftSchedules.Add(schedule);
             await _context.SaveChangesAsync();
             return Ok(schedule);
