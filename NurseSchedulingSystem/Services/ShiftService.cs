@@ -28,5 +28,28 @@ namespace NurseSchedulingSystem.Services
             return await _context.ShiftSchedules
                 .AnyAsync(s => s.NurseId == nurseId && s.Date.Date == date.Date);
         }
+
+        public async Task<string?> CheckShift(int nurseId,DateTime date,string shiftType)
+        {
+            var nurse = await _context.Nurses.FindAsync(nurseId);
+            if (nurse == null) return $"找不到護理師 ID:{nurseId}";
+
+            //檢查護理師N
+            if((shiftType == "E" ||shiftType=="N")&&nurse.Role != "N3")
+            {
+                return $"{nurse.Name}職級不足!";
+            }
+            //檢查是否連續上班超過五天
+            if(await IsConsecutiveDaysExceeded(nurseId, date))
+            {
+                return $"{nurse.Name}已連續上班五天";
+            }
+            //檢查是否當天重複排班
+            if(await IsNurseAlreadyScheduled(nurseId, date))
+            {
+                return $"{nurse.Name}在{date.ToShortDateString()}已有班別";
+            }
+            return null; //回傳null表示一切正常
+        }
     }
 }

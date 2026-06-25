@@ -54,18 +54,24 @@ namespace NurseSchedulingSystem.Controllers
             {
                 foreach(var item in request.Schedules)
                 {
+                    var errorMessage = await _shiftService.CheckShift(item.NurseId, item.Date, item.ShiftType);
                     // 檢查邏輯：複製已經寫好的檢查規則
-                    if (await _shiftService.IsConsecutiveDaysExceeded(item.NurseId, item.Date))
+                    //if (await _shiftService.IsConsecutiveDaysExceeded(item.NurseId, item.Date))
+                    //{
+                    //    //如果違規，直接取消所有異動
+                    //    await transaction.RollbackAsync();
+                    //    return BadRequest($"排班失敗:護理師{item.NurseId}違反連續連續排班限制");
+                    //}
+                    //// 檢查邏輯：如果已經有班，就攔截
+                    //if (await _shiftService.IsNurseAlreadyScheduled(item.NurseId, item.Date))
+                    //{
+                    //    await transaction.RollbackAsync();
+                    //    return BadRequest($"排班失敗：護理師 {item.NurseId} 在 {item.Date.ToShortDateString()} 已經有班了！");
+                    //}
+                    if (errorMessage != null)
                     {
-                        //如果違規，直接取消所有異動
-                        await transaction.RollbackAsync();
-                        return BadRequest($"排班失敗:護理師{item.NurseId}違反連續連續排班限制");
-                    }
-                    // 檢查邏輯：如果已經有班，就攔截
-                    if (await _shiftService.IsNurseAlreadyScheduled(item.NurseId, item.Date))
-                    {
-                        await transaction.RollbackAsync();
-                        return BadRequest($"排班失敗：護理師 {item.NurseId} 在 {item.Date.ToShortDateString()} 已經有班了！");
+                        await transaction.RollbackAsync(); // 只要有一個錯，全部取消
+                        return BadRequest(errorMessage);
                     }
 
                     // 轉換為實體物件並存入
