@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NurseSchedulingSystem.Data;
@@ -96,7 +97,28 @@ namespace NurseSchedulingSystem.Controllers
                 return StatusCode(500, $"系統錯誤:{ex.Message}");
             }
         }
-
+        //修改排班表
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateSchedule(int id, [FromBody]ShiftSchedule request)
+        {
+            //先找到原始班表
+            var schedule = await _context.ShiftSchedules.FindAsync(id);
+            // 在驗證前，把該筆班表的 ID 傳進去
+            if (schedule == null)
+            {
+                return NotFound("找不到這筆班表!");
+            }
+            //進行規則驗證 (複製已寫好的checkShift)
+            var errorMessage = await _shiftService.CheckShift(request.NurseId, request.Date, request.ShiftType,id);
+            if (errorMessage != null) return BadRequest(errorMessage);
+            //更新屬性
+            schedule.NurseId = request.NurseId;
+            schedule.Date = request.Date;
+            schedule.ShiftType = request.ShiftType;
+            //儲存
+            await _context.SaveChangesAsync();
+            return Ok("更新成功");
+        }
 
         //查詢所有班表
         [HttpGet]

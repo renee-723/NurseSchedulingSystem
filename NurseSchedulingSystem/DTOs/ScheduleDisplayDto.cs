@@ -7,6 +7,6 @@ namespace NurseSchedulingSystem.DTOs
     {
         public string NurseName {  get; set; }
         public DateTime Date { get; set; }
-        public String ShiftType {  get; set; }
+        public string ShiftType {  get; set; }
     }
 }

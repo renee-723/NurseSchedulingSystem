@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NurseSchedulingSystem.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace NurseSchedulingSystem.Services
 {
@@ -22,14 +23,25 @@ namespace NurseSchedulingSystem.Services
                 .CountAsync();   //統計這五天內資料庫裡有幾筆班表
             return count >= 5;   //如果超過5(回傳true)代表已超過連續上班上限
         }
-        public async Task<bool> IsNurseAlreadyScheduled(int nurseId,DateTime date)
+        public async Task<bool> IsNurseAlreadyScheduled(int nurseId,DateTime date,int?excludeId=null)
         {
-            // 查詢資料庫：該位護理師在該日期，是否已經存在任何一筆紀錄
-            return await _context.ShiftSchedules
-                .AnyAsync(s => s.NurseId == nurseId && s.Date.Date == date.Date);
+            //// 查詢資料庫：該位護理師在該日期，是否已經存在任何一筆紀錄
+            //return await _context.ShiftSchedules
+            //    .AnyAsync(s => s.NurseId == nurseId && s.Date.Date == date.Date);
+
+            // 這時候還沒有真的去資料庫撈資料，它只是準備要撈的清單
+            var query = _context.ShiftSchedules
+                .Where(s => s.NurseId == nurseId && s.Date.Date == date.Date);
+            //檢查時，請忽略我正在更新的那一筆資料 ID
+            if (excludeId.HasValue)
+            {
+                query = query.Where(s => s.Id != excludeId.Value);
+            }
+
+            return await query.AnyAsync();
         }
 
-        public async Task<string?> CheckShift(int nurseId,DateTime date,string shiftType)
+        public async Task<string?> CheckShift(int nurseId,DateTime date,string shiftType, int? excludeId = null)
         {
             var nurse = await _context.Nurses.FindAsync(nurseId);
             if (nurse == null) return $"找不到護理師 ID:{nurseId}";
@@ -45,7 +57,7 @@ namespace NurseSchedulingSystem.Services
                 return $"{nurse.Name}已連續上班五天";
             }
             //檢查是否當天重複排班
-            if(await IsNurseAlreadyScheduled(nurseId, date))
+            if(await IsNurseAlreadyScheduled(nurseId, date, excludeId))
             {
                 return $"{nurse.Name}在{date.ToShortDateString()}已有班別";
             }
