@@ -61,6 +61,12 @@ namespace NurseSchedulingSystem.Controllers
                         await transaction.RollbackAsync();
                         return BadRequest($"排班失敗:護理師{item.NurseId}違反連續連續排班限制");
                     }
+                    // 檢查邏輯：如果已經有班，就攔截
+                    if (await _shiftService.IsNurseAlreadyScheduled(item.NurseId, item.Date))
+                    {
+                        await transaction.RollbackAsync();
+                        return BadRequest($"排班失敗：護理師 {item.NurseId} 在 {item.Date.ToShortDateString()} 已經有班了！");
+                    }
 
                     // 轉換為實體物件並存入
                     var schedule = new ShiftSchedule

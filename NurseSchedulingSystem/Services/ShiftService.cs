@@ -22,5 +22,11 @@ namespace NurseSchedulingSystem.Services
                 .CountAsync();   //統計這五天內資料庫裡有幾筆班表
             return count >= 5;   //如果超過5(回傳true)代表已超過連續上班上限
         }
+        public async Task<bool> IsNurseAlreadyScheduled(int nurseId,DateTime date)
+        {
+            // 查詢資料庫：該位護理師在該日期，是否已經存在任何一筆紀錄
+            return await _context.ShiftSchedules
+                .AnyAsync(s => s.NurseId == nurseId && s.Date.Date == date.Date);
+        }
     }
 }
