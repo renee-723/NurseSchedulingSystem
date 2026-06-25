@@ -44,6 +44,46 @@ namespace NurseSchedulingSystem.Controllers
             await _context.SaveChangesAsync();
             return Ok(schedule);
         }
+        [HttpPost("Batch")]
+        public async Task<IActionResult> BatchCreate([FromBody]BatchScheduleRequest request)
+        {
+            // 使用 EF Core 的 Transaction 機制，確保「要嘛全部成功，要嘛一筆都不存」
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                foreach(var item in request.Schedules)
+                {
+                    // 檢查邏輯：複製已經寫好的檢查規則
+                    if (await _shiftService.IsConsecutiveDaysExceeded(item.NurseId, item.Date))
+                    {
+                        //如果違規，直接取消所有異動
+                        await transaction.RollbackAsync();
+                        return BadRequest($"排班失敗:護理師{item.NurseId}違反連續連續排班限制");
+                    }
+
+                    // 轉換為實體物件並存入
+                    var schedule = new ShiftSchedule
+                    {
+                        NurseId = item.NurseId,
+                        Date = item.Date,
+                        ShiftType = item.ShiftType
+                    };
+                    _context.ShiftSchedules.Add(schedule);
+                }
+                // 全部檢查通過，才一次寫入資料庫
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+
+                return Ok("批次排班成功");
+            }
+            catch (Exception ex)
+            {
+                // 如果發生未知錯誤，也要回復
+                await transaction.RollbackAsync();
+                return StatusCode(500, $"系統錯誤:{ex.Message}");
+            }
+        }
 
 
         //查詢所有班表

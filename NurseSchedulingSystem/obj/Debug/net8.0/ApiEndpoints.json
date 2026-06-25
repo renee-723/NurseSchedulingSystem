@@ -106,6 +106,22 @@
   },
   {
     "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
+    "Method": "BatchCreate",
+    "RelativePath": "api/ShiftSchedules/Batch",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "NurseSchedulingSystem.DTOs.BatchScheduleRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
     "Method": "GetEmployeeSchedule",
     "RelativePath": "api/ShiftSchedules/Display",
     "HttpMethod": "GET",

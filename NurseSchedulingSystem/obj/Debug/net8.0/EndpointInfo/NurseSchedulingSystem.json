@@ -150,6 +150,37 @@
         }
       }
     },
+    "/api/ShiftSchedules/Batch": {
+      "post": {
+        "tags": [
+          "ShiftSchedules"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchScheduleRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchScheduleRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchScheduleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/ShiftSchedules/Status/{date}": {
       "get": {
         "tags": [
@@ -250,6 +281,23 @@
   },
   "components": {
     "schemas": {
+      "BatchScheduleRequest": {
+        "type": "object",
+        "properties": {
+          "createdByUserId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "schedules": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ScheduleItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "Nurse": {
         "type": "object",
         "properties": {
@@ -267,6 +315,24 @@
           },
           "isActive": {
             "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ScheduleItem": {
+        "type": "object",
+        "properties": {
+          "nurseId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "shiftType": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
