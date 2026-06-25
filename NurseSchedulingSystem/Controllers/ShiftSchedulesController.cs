@@ -25,22 +25,31 @@ namespace NurseSchedulingSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> CreatSchedule(ShiftSchedule schedule)
         {
-            //先檢查這位護理師是否存在
-            var nurse = await _context.Nurses.FindAsync(schedule.NurseId);
-            if (nurse == null)
+            // 直接統一呼叫 Service 驗證邏輯
+            var errorMessage = await _shiftService.CheckShift(schedule.NurseId, schedule.Date, schedule.ShiftType);
+
+            if (errorMessage != null)
             {
-                return BadRequest("找不到護理師");
+                return BadRequest(errorMessage);
             }
-            if ((schedule.ShiftType == "E" || schedule.ShiftType == "N") && nurse.Role != "N3")
-            {
-                return BadRequest($"班別{schedule.ShiftType}要求N3以上職級!");
-            }
-            if (await _shiftService.IsConsecutiveDaysExceeded(schedule.NurseId, schedule.Date))
-            {
-                return BadRequest("該護理師已連續上班5天，必須休息");
-            }
-            // 將資料庫中撈到的護理師資訊關聯給班表
-            //schedule.Nurse = nurse;
+            ////先檢查這位護理師是否存在
+            //var nurse = await _context.Nurses.FindAsync(schedule.NurseId);
+            //Console.WriteLine($"[DEBUG] Nurse: {nurse.Name}, Role: '{nurse.Role}'");
+            //if (nurse == null)
+            //{
+            //    return BadRequest("找不到護理師");
+            //}
+            //var allowedRoles = new List<string> { "N3", "N4", "N5" };
+            //if ((schedule.ShiftType == "E" || schedule.ShiftType == "N") &&!allowedRoles.Contains(nurse.Role))
+            //{
+            //    return BadRequest($"班別{schedule.ShiftType}要求N3以上職級!");
+            //}
+            //if (await _shiftService.IsConsecutiveDaysExceeded(schedule.NurseId, schedule.Date))
+            //{
+            //    return BadRequest("該護理師已連續上班5天，必須休息");
+            //}
+            //// 將資料庫中撈到的護理師資訊關聯給班表
+            ////schedule.Nurse = nurse;
             _context.ShiftSchedules.Add(schedule);
             await _context.SaveChangesAsync();
             return Ok(schedule);

@@ -45,9 +45,10 @@ namespace NurseSchedulingSystem.Services
         {
             var nurse = await _context.Nurses.FindAsync(nurseId);
             if (nurse == null) return $"找不到護理師 ID:{nurseId}";
-
+            // 如果職級必須是 N3, N4, N5 才可以排夜班：
+            var allowedRoles = new List<string> { "N3", "N4", "N5" };
             //檢查護理師N
-            if((shiftType == "E" ||shiftType=="N")&&nurse.Role != "N3")
+            if ((shiftType == "E" ||shiftType=="N")&&!allowedRoles.Contains(nurse.Role))
             {
                 return $"{nurse.Name}職級不足!";
             }
