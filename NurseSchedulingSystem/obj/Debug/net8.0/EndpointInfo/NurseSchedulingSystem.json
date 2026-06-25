@@ -110,16 +110,6 @@
       }
     },
     "/api/ShiftSchedules": {
-      "get": {
-        "tags": [
-          "ShiftSchedules"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
       "post": {
         "tags": [
           "ShiftSchedules"
@@ -148,6 +138,16 @@
             "description": "OK"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "ShiftSchedules"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
       }
     },
     "/api/ShiftSchedules/Status/{date}": {
@@ -165,6 +165,18 @@
               "format": "date-time"
             }
           }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/ShiftSchedules/Display": {
+      "get": {
+        "tags": [
+          "ShiftSchedules"
         ],
         "responses": {
           "200": {

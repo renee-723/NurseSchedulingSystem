@@ -20,14 +20,6 @@ namespace NurseSchedulingSystem.Controllers
             _context = context;
         }
 
-        //查詢所有班表
-        [HttpGet]
-        public async Task<IActionResult> GetAllSchedules()
-        {
-            var schedules = await _context.ShiftSchedules.Include(s => s.Nurse).ToListAsync();
-            return Ok(schedules);
-        }
-
         //新增一筆班表
         [HttpPost]
         public async Task<IActionResult> CreatSchedule(ShiftSchedule schedule)
@@ -38,11 +30,11 @@ namespace NurseSchedulingSystem.Controllers
             {
                 return BadRequest("找不到護理師");
             }
-            if((schedule.ShiftType == "E" || schedule.ShiftType == "N") && nurse.Role != "N3")
+            if ((schedule.ShiftType == "E" || schedule.ShiftType == "N") && nurse.Role != "N3")
             {
                 return BadRequest($"班別{schedule.ShiftType}要求N3以上職級!");
             }
-            if(await _shiftService.IsConsecutiveDaysExceeded(schedule.NurseId, schedule.Date))
+            if (await _shiftService.IsConsecutiveDaysExceeded(schedule.NurseId, schedule.Date))
             {
                 return BadRequest("該護理師已連續上班5天，必須休息");
             }
@@ -51,6 +43,15 @@ namespace NurseSchedulingSystem.Controllers
             _context.ShiftSchedules.Add(schedule);
             await _context.SaveChangesAsync();
             return Ok(schedule);
+        }
+
+
+        //查詢所有班表
+        [HttpGet]
+        public async Task<IActionResult> GetAllSchedules()
+        {
+            var schedules = await _context.ShiftSchedules.Include(s => s.Nurse).ToListAsync();
+            return Ok(schedules);
         }
 
         //查詢現在每個班總共有多少人上
@@ -75,6 +76,22 @@ namespace NurseSchedulingSystem.Controllers
                 }).ToList()
             };
             return Ok(status);
+        }
+
+        //給員工看的精簡班表
+        [HttpGet("Display")]
+        public async Task<IActionResult> GetEmployeeSchedule()
+        {
+            var schedules = await _context.ShiftSchedules  //針對ShiftSchedules這個表格進行查詢
+                .Include(s=>s.Nurse)  //連動查詢
+                .Select(s=>new ScheduleDisplayDto  
+                {
+                    NurseName=s.Nurse.Name,
+                    Date = s.Date,
+                    ShiftType = s.ShiftType,
+                })
+                .ToListAsync();
+                return Ok(schedules);
         }
 
         //刪除班表

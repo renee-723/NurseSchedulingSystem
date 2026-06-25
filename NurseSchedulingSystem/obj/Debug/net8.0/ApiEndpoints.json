@@ -64,16 +64,6 @@
   },
   {
     "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
-    "Method": "GetAllSchedules",
-    "RelativePath": "api/ShiftSchedules",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
     "Method": "CreatSchedule",
     "RelativePath": "api/ShiftSchedules",
     "HttpMethod": "POST",
@@ -90,6 +80,16 @@
   },
   {
     "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
+    "Method": "GetAllSchedules",
+    "RelativePath": "api/ShiftSchedules",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
     "Method": "DeleteSchedule",
     "RelativePath": "api/ShiftSchedules/{id}",
     "HttpMethod": "DELETE",
@@ -102,6 +102,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "NurseSchedulingSystem.Controllers.ShiftSchedulesController",
+    "Method": "GetEmployeeSchedule",
+    "RelativePath": "api/ShiftSchedules/Display",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
